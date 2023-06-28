@@ -1,6 +1,6 @@
 {
   "name": "@skypress/typeorm-query-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "SkyPress TypeORM package to map URL Query to Find Options",
   "repository": {
     "url": "https://github.com/SkyPressATX/typeorm-query-api"
