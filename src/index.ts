@@ -78,7 +78,7 @@ function generateWhereOptions(query?: any): any | undefined {
 }
 
 function parseComparator(value: string): any {
-  const comparator = this.explode(value, '::');
+  const comparator = explode(value, '::');
   switch (comparator[0]) {
     case 'gt':
       return MoreThan(comparator[1]);
