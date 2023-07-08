@@ -27,8 +27,6 @@ export function newQuery(query?: T): T {
   } = query;
 
   const queryOptions: T = {
-    select: explode(select),
-    relations: explode(load),
     take: limit,
     skip,
     withDeleted: deleted,
@@ -37,6 +35,18 @@ export function newQuery(query?: T): T {
 
   if (sort) {
     queryOptions.order = { [trim(escape(sort))]: desc ? 'DESC' : 'ASC' };
+  }
+
+  if (select) {
+    const selectObj = {};
+    explode(select).forEach((x) => (selectObj[x] = true));
+    queryOptions.select = selectObj;
+  }
+
+  if (load) {
+    const loadObj = {};
+    explode(load).forEach((x) => (loadObj[x] = true));
+    queryOptions.relations = loadObj;
   }
 
   return pruneObject(queryOptions);
