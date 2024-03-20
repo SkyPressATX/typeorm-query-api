@@ -3,10 +3,16 @@ import { IQuery } from './types';
 import { explode } from './explode';
 import { generateWhereOptions } from './generateWhereOptions';
 import { pruneObject } from './pruneObject';
+import {
+  Entity,
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsSelect,
+} from 'typeorm';
 
-type T = Record<string, any>;
-
-export function newQuery(query?: IQuery): IQuery | undefined {
+export function newQuery<T extends typeof Entity>(
+  query?: IQuery,
+): FindManyOptions<T> | undefined {
   if (isEmpty(query)) {
     return undefined;
   }
@@ -22,7 +28,7 @@ export function newQuery(query?: IQuery): IQuery | undefined {
     ...where
   } = query;
 
-  const queryOptions: T = {
+  const queryOptions: FindManyOptions = {
     take: limit,
     skip,
     withDeleted: deleted,
@@ -34,22 +40,22 @@ export function newQuery(query?: IQuery): IQuery | undefined {
   }
 
   if (select) {
-    const selectObj: T = {};
+    const selectObj: Record<string | number, boolean> = {};
     const selectArray = explode(select);
 
     if (selectArray) {
-      selectArray.forEach((x) => (selectObj[x] = true));
-      queryOptions.select = selectObj;
+      selectArray.forEach((x: string | number) => (selectObj[x] = true));
+      queryOptions.select = selectObj as FindOptionsSelect<T>;
     }
   }
 
   if (load) {
-    const loadObj: T = {};
+    const loadObj: Record<string | number, boolean> = {};
     const loadArray = explode(load);
 
     if (loadArray) {
-      loadArray.forEach((x) => (loadObj[x] = true));
-      queryOptions.relations = loadObj;
+      loadArray.forEach((x: string | number) => (loadObj[x] = true));
+      queryOptions.relations = loadObj as FindOptionsRelations<T>;
     }
   }
 
