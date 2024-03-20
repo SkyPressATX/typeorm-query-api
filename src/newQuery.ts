@@ -4,13 +4,12 @@ import { explode } from './explode';
 import { generateWhereOptions } from './generateWhereOptions';
 import { pruneObject } from './pruneObject';
 import {
-  Entity,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsSelect,
 } from 'typeorm';
 
-export function newQuery<T extends typeof Entity>(
+export function newQuery<T = any>(
   query?: IQuery,
 ): FindManyOptions<T> | undefined {
   if (isEmpty(query)) {
